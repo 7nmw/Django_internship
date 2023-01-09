@@ -6,7 +6,7 @@ class Users(models.Model):
     fam = models.TextField(max_length=15, null=True, verbose_name='Фамилия')
     name = models.TextField(max_length=15, null=True, verbose_name='Имя')
     otc = models.TextField(max_length=15, null=True, verbose_name='Отчество')
-    emails = models.EmailField(max_length=20, unique=True, verbose_name='Почта пользователя')
+    emails = models.EmailField(max_length=30, unique=True, verbose_name='Почта пользователя')
     phone = PhoneNumberField(unique=True, null=False, blank=False, verbose_name='Номер телефона')
 
     def __str__(self):
@@ -19,8 +19,9 @@ class Coords(models.Model):
     height = models.IntegerField(verbose_name='Высота')
 
 
+
 class Pereval_areas(models.Model):
-    id_parent = models.TextField(max_length=4, default=0, null=False)
+    id_parent = models.TextField(max_length=4, default=0)
     title_area = models.TextField(max_length=255, verbose_name='Горный хребет')
 
     def __str__(self):
@@ -34,11 +35,9 @@ class Pereval_added(models.Model):
     connect = models.TextField(max_length=25, blank=True)
     add_time = models.DateTimeField(auto_now_add=True, verbose_name='Дата и время')
 
-    area = models.ForeignKey(Pereval_areas, verbose_name='Горный хребет', on_delete=models.CASCADE)
+    coord_id = models.ForeignKey(Coords, on_delete=models.CASCADE, null=True)
 
-    coord_id = models.ForeignKey(Coords, on_delete=models.CASCADE)
-
-    author = models.ForeignKey(Users, on_delete=models.CASCADE, null=False)
+    author = models.ForeignKey(Users, on_delete=models.CASCADE)
 
     LEVELS = [
         ('1А', '1А'),

@@ -1,17 +1,14 @@
 from django.http import HttpResponse
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 import json
-
 from .models import Pereval_added, Users, Coords, Pereval_areas, Pereval_images, Spr_activities_types
 from .serializers import PerevalSerializer, UsersSerializer, CoordsSerializer, Pereval_areasSerializer, \
     Pereval_imagesSerializer, Spr_activities_typesSerializer
-
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.response import Response
 #создание представлений
 
 
-class PerevalViewSet(viewsets.ModelViewSet):
-    queryset = Pereval_added.objects.all()
-    serializer_class = PerevalSerializer
 
 
 class UsersViewSet(viewsets.ModelViewSet):
@@ -39,21 +36,24 @@ class Spr_activities_typesViewSet(viewsets.ModelViewSet):
     serializer_class = Spr_activities_typesSerializer
 
 
+class PerevalViewSet(viewsets.ModelViewSet):
+    queryset = Pereval_added.objects.all()
+    serializer_class = PerevalSerializer
+
+
+@csrf_exempt
 def submitData(request):
     if request.method == 'POST':
         json_params = json.loads(request.body)
-
         pereval_added = Pereval_added.objects.create(
             beautyTitle=json_params['beautyTitle'],
             title_added=json_params['title_added'],
             other_titles=json_params['other_titles'],
             connect=json_params['connect'],
-            add_time=json_params['add_time'],
-            area=Pereval_areas.objects.create(
-                title_area=json_params['title_area']
-            ),
             coord_id=Coords.objects.create(
-                coord_id=json_params['coord_id']
+                latitude=json_params['latitude'],
+                longitude=json_params['longitude'],
+                height=json_params['height']
             ),
             author=Users.objects.create(
                 fam=json_params['fam'],
@@ -63,15 +63,11 @@ def submitData(request):
                 phone=json_params['phone']
             )
         )
-
         return HttpResponse(json.dumps({
             "beautyTitle": pereval_added.beautyTitle,
             "title_added": pereval_added.title_added,
             "other_titles": pereval_added.other_titles,
             "connect": pereval_added.connect,
-            "add_time": pereval_added.add_time,
-            "area": pereval_added.area,
-            "coord_id": pereval_added.coord_id,
             "author": pereval_added.author,
+            "coord_id": pereval_added.coord_id
         }))
-
