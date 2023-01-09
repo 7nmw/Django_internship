@@ -40,10 +40,6 @@ class PerevalViewSet(viewsets.ModelViewSet):
     queryset = Pereval_added.objects.all()
     serializer_class = PerevalSerializer
 
-    def get(self, request):
-        lst = Pereval_added.objects.all()
-        return Response({'posts': list(lst)})
-
 
 @csrf_exempt
 def submitData(request):
