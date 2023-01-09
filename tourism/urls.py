@@ -19,6 +19,7 @@ from rest_framework import routers
 from django.contrib import admin
 from django.urls import path, include
 
+from pereval import views
 from pereval.views import PerevalViewSet, UsersViewSet, CoordsViewSet, Pereval_areasViewSet, Pereval_imagesViewSet, \
     Spr_activities_typesViewSet, submitData
 
@@ -33,5 +34,6 @@ router.register(r'Spr_activities_types', Spr_activities_typesViewSet)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include(router.urls)),
+    path('', include(router.urls)),
     path('api/v1/submitData/', submitData),
 ]
