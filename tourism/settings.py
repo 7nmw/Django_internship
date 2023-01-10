@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'pereval.apps.PerevalConfig',
     'rest_framework',
     'phonenumber_field',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [

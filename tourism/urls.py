@@ -19,6 +19,8 @@ from rest_framework import routers
 from django.contrib import admin
 from django.urls import path, include
 
+from .yasg import urlpatterns as doc_urls
+
 from pereval import views
 from pereval.views import PerevalViewSet, UsersViewSet, CoordsViewSet, Pereval_areasViewSet, Pereval_imagesViewSet, \
     Spr_activities_typesViewSet, submitData, submitDataGetPatch
@@ -38,3 +40,5 @@ urlpatterns = [
     path('api/v1/submitData/', submitData),
     path('api/v1/submitData/<int:Pereval_added_id>', submitDataGetPatch)
 ]
+
+urlpatterns += doc_urls
