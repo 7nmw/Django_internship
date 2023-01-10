@@ -41,6 +41,7 @@ class PerevalViewSet(viewsets.ModelViewSet):
     serializer_class = PerevalSerializer
 
 
+
 @csrf_exempt
 def submitData(request):
     if request.method == 'POST':
@@ -70,4 +71,34 @@ def submitData(request):
             "connect": pereval_added.connect,
             "author": pereval_added.author,
             "coord_id": pereval_added.coord_id
+        }))
+
+
+@csrf_exempt
+def submitDataGetPatch(request, Pereval_added_id):
+    pereval_added = Pereval_added.objects.get(pk=Pereval_added_id)
+    if request.method == 'GET':
+        return HttpResponse(json.dumps(
+            {
+                "id": pereval_added.id,
+                "beautyTitle": pereval_added.beautyTitle,
+                "title_added": pereval_added.title_added,
+                "other_titles": pereval_added.other_titles,
+                "connect": pereval_added.connect,
+                "status": pereval_added.status
+            }
+        ))
+    json_params = json.loads(request.body)
+    if request.method == 'PATCH':
+        pereval_added.beautyTitle = json_params.get('beautyTitle', pereval_added.beautyTitle)
+        pereval_added.title_added = json_params.get('title_added', pereval_added.title_added)
+        pereval_added.other_titles = json_params.get('other_titles', pereval_added.other_titles)
+        pereval_added.connect = json_params.get('connect', pereval_added.connect)
+        pereval_added.save()
+        return HttpResponse(json.dumps({
+            "id": pereval_added.id,
+            "beautyTitle": pereval_added.beautyTitle,
+            "title_added": pereval_added.title_added,
+            "other_titles": pereval_added.other_titles,
+            "connect": pereval_added.connect
         }))
