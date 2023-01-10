@@ -21,7 +21,7 @@ from django.urls import path, include
 
 from pereval import views
 from pereval.views import PerevalViewSet, UsersViewSet, CoordsViewSet, Pereval_areasViewSet, Pereval_imagesViewSet, \
-    Spr_activities_typesViewSet, submitData
+    Spr_activities_typesViewSet, submitData, submitDataGetPatch
 
 router = routers.DefaultRouter()
 router.register(r'Pereval_added', PerevalViewSet)
@@ -36,4 +36,5 @@ urlpatterns = [
     path('api/v1/', include(router.urls)),
     path('', include(router.urls)),
     path('api/v1/submitData/', submitData),
+    path('api/v1/submitData/<int:Pereval_added_id>', submitDataGetPatch)
 ]
